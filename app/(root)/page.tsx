@@ -1,6 +1,12 @@
-import Image from "next/image";
+import { currentUser } from "@clerk/nextjs/server";
+import LandingPage from "components/shared/LandingPage";
 
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser();
+  
+  if(user){
+    return <LandingPage />
+  }
   return (
     <main>
       <h1 className="text-center">Social media</h1>
