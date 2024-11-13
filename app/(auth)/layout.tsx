@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google' 
 import { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
-import '../global.css'
+import '@/globals.css'
 
 export const metadata: Metadata = {
   title: 'social media',
@@ -15,15 +15,15 @@ const inter = Inter({
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
     <html lang="en">
-      <ClerkProvider>
-        <body>
+      <body>
+        <ClerkProvider>
           <main className={`${inter.className}bg-dark-1`}>
             <div className='w-full flex justify-center items-center min-h-screen'>
               {children}
             </div>
           </main>
-        </body>
-      </ClerkProvider>
+        </ClerkProvider>
+      </body>
     </html>
   );
 }
