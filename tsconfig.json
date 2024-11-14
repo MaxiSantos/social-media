@@ -18,9 +18,10 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./",
+    "rootDir": ".",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"],
+      "@/*": ["./*"],
       "@public/*": ["public/*"],
     }
   },

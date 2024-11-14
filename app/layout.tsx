@@ -2,8 +2,12 @@ import { Inter } from 'next/font/google'
 import { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 
-import '@/globals.css'
+import '@/app/globals.css'
 import { currentUser } from '@clerk/nextjs/server'
+import TopBar from '@/components/shared/TopBar'
+import LeftSideBar from '@/components/shared/LeftSideBar'
+import RightSideBar from '@/components/shared/RightSideBar'
+import BottomBar from '@/components/shared/BottomBar'
 
 export const metadata: Metadata = {
   title: 'Twiddle',
@@ -51,7 +55,7 @@ export default async function RootLayout({ children }:
                     {children}
                   </div>
                 </section>
-                <RightSIdeBar />
+                <RightSideBar />
               </main>
               <BottomBar />
             </main>
