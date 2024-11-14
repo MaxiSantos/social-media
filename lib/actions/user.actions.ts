@@ -2,8 +2,9 @@
 import User from "../models/user.model"
 import { connectToDB } from "../db";
 import { revalidatePath } from "next/cache";
+import { FilterQuery, SortOrder } from "mongoose";
 
-interface CreateUserParams {
+type CreateUserParams = {
   userId: string;
   email: string;
   username: string;
@@ -42,7 +43,47 @@ export const fetchUser = async (userId: string) => {
   }
 }
 
-interface updateUserParams {
+type FetchUsersParams = {
+  userId: string;
+  searchString?: string;
+  pageNumber?: number;
+  pageSize?: number
+  sortBy?: SortOrder
+}
+export const fetchUsers = async ({
+  userId,
+  searchString = '',
+  pageNumber = 1,
+  pageSize = 20,
+  sortBy = 'desc'
+}: FetchUsersParams) => {
+  try {
+    await connectToDB()
+    const skipAmount = (pageNumber - 1) * pageSize
+    const regex = new RegExp(searchString, 'i')
+    const query: FilterQuery<typeof User> = {
+      id: { $ne: userId }
+    }
+    if (searchString.trim() !== '') {
+      query.$or = [
+        { username: { $regex: regex } },
+        { name: { $regex: regex } }
+      ]
+    }
+    const sortOptions = { createdAt: sortBy }
+    const userQuery = User.find(query)
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize)
+    const totalUserCount = await User.countDocuments(query)
+    const users = await userQuery.exec()
+    const isNext = totalUserCount > skipAmount + users.length
+    return { users, isNext }
+  } catch (err: any) {
+    throw new Error(`Failed to fetch users: ${err.message}`)
+  }
+}
+type updateUserParams = {
   userId: string;
   email?: string;
   username?: string;
