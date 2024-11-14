@@ -4,7 +4,7 @@ type Props = {}
 
 const RightSideBar = (props: Props) => {
   return (
-    <div>RightSide</div>
+    <div>RightSide bar</div>
   )
 }
 
