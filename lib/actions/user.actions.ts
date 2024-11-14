@@ -1,6 +1,7 @@
 'use server'
 import User from "../models/user.model"
 import { connectToDB } from "../db";
+import { revalidatePath } from "next/cache";
 
 interface CreateUserParams {
   userId: string;
@@ -38,5 +39,44 @@ export const fetchUser = async (userId: string) => {
     })
   } catch (err: any) {
     throw new Error(`Failed to fetch user: ${err.message}`)
+  }
+}
+
+interface updateUserParams {
+  userId: string;
+  email?: string;
+  username?: string;
+  name?: string;
+  bio?: string;
+  image?: string;
+  path?: string;
+}
+
+export const updateUser = async ({
+  userId,
+  name,
+  email,
+  username,
+  bio,
+  path,
+  image
+}: updateUserParams): Promise<void> => {
+  try {
+    await connectToDB()
+    await User.findOneAndUpdate(
+      { id: userId },
+      {
+        name,
+        email,
+        username,
+        bio,
+        path,
+        image,
+        onboarded: true
+      }
+    )
+    if (path === '/profile/edit') revalidatePath(path)
+  } catch (err: any) {
+    throw new Error(`Failed to update user info: ${err.message}`)
   }
 }
