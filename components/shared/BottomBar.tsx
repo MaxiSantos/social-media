@@ -5,9 +5,6 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link';
 import Image from 'next/image';
 import { ClerkProvider, useAuth } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server'
-import Skeleton from 'react-loading-skeleton';
-
 
 type Props = {}
 
@@ -16,10 +13,9 @@ const BottomBar = () => {
   const { userId } = useAuth()
 
   return (
-  <>
-    <section className="bottombar">
-      <div className="bottombar_container">
-        <Suspense fallback={<Skeleton />}>
+    <>
+      <section className="bottombar">
+        <div className="bottombar_container">
           <ClerkProvider dynamic>
             {
               sidebarLinks.map((link) => {
@@ -50,11 +46,10 @@ const BottomBar = () => {
               )
             }
           </ClerkProvider>
-        </Suspense>
-      </div>
-    </section>
-  </>
-)
+        </div>
+      </section>
+    </>
+  )
 }
 
 export default BottomBar

@@ -1,5 +1,6 @@
+import AccountInfo from "@/components/forms/AccountInfo"
 import { fetchUser } from "@/lib/actions/user.actions"
-import { UserProfile } from "@clerk/nextjs"
+import { ClerkProvider, UserProfile } from "@clerk/nextjs"
 import { currentUser } from "@clerk/nextjs/server"
 import { dark } from "@clerk/themes"
 import { redirect } from "next/navigation"
@@ -7,18 +8,19 @@ import { redirect } from "next/navigation"
 const Page = async () => {
   const user = await currentUser()
   if (!user) return null;
-  
+
   const userInfo = await fetchUser(user.id)
   if (userInfo?.onboarded) redirect('/')
 
   const userData = {
     id: user?.id,
-    objectID: userInfo?._id,
+    objectID: JSON.parse(JSON.stringify(userInfo?._id)),
     userName: userInfo ? userInfo?.username : user?.username,
     name: userInfo ? userInfo?.name : user?.firstName || '',
     bio: userInfo ? userInfo?.bio : '',
     image: userInfo ? userInfo?.image : user?.imageUrl
   }
+  console.log({ userData })
   return (
     <>
       <main className="mx-auto flex flex-col justify-start px-10 py-20">
@@ -28,16 +30,18 @@ const Page = async () => {
             Complete your profile now to use Social Media</p>
         </div>
         <div className="mt-10">
-          <UserProfile
-            appearance={{
-              baseTheme: dark,
-            }}
-            routing="hash"
-          />
+          <ClerkProvider dynamic>
+            <UserProfile
+              appearance={{
+                baseTheme: dark,
+              }}
+              routing="hash"
+            />
+          </ClerkProvider>
         </div>
-        {/*<AccountInfo
+        <AccountInfo
           user={userData}
-        />*/}
+        />
       </main>
     </>
   )
