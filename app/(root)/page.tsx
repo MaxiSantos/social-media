@@ -4,7 +4,7 @@ import LandingPage from "components/sections/LandingPage";
 export default async function Home() {
   const user = await currentUser();
   
-  if(user){
+  if(!user){
     return <LandingPage />
   }
   return (

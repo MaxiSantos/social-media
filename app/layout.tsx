@@ -31,9 +31,7 @@ export default async function RootLayout({ children }:
           <ClerkProvider>
             <body>
               <main className={`${inter.className} bg-dark-1`}>
-                <div className='w-full flex justify-center items-center min-h-screen'>
-                  {children}
-                </div>
+                {children}
               </main>
             </body>
           </ClerkProvider>
@@ -46,22 +44,12 @@ export default async function RootLayout({ children }:
       <html lang='en'>
         <ClerkProvider>
           <body>
-            <main className={`${inter.className}`}>
-              <TopBar />
-              <main className='flex flex-row'>
-                <LeftSideBar />
-                <section className='main-container'>
-                  <div className='w-full flex justify-center items-center min-h-screen'>
-                    {children}
-                  </div>
-                </section>
-                <RightSideBar />
-              </main>
-              <BottomBar />
+            <main className={`${inter.className} bg-dark-1`}>
+              {children}
             </main>
           </body>
         </ClerkProvider>
       </html>
     </>
-  )    
+  )
 }
