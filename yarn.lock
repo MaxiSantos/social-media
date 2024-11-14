@@ -53,10 +53,25 @@
     std-env "^3.7.0"
     swr "^2.2.0"
 
+"@clerk/themes@^2.1.44":
+  version "2.1.44"
+  resolved "https://registry.yarnpkg.com/@clerk/themes/-/themes-2.1.44.tgz#bb7fb3d007209e7e6bc23dfe611a8cadf1dd5360"
+  integrity sha512-w0Rklie0A6N64UEI4YOb2N2zjA369kvnFrBjjD9p3opwEsl7SgR3VmSSmwHtFH1YZ6eASzjx9deKcXVi38B7SA==
+  dependencies:
+    "@clerk/types" "4.33.0"
+    tslib "2.4.1"
+
 "@clerk/types@4.32.0":
   version "4.32.0"
   resolved "https://registry.yarnpkg.com/@clerk/types/-/types-4.32.0.tgz#8180470bfe18063a23eef2e26dd4a41d446d4beb"
   integrity sha512-6oqRJsQE8GIThVyPBAO0kJP0pZJ1c11Hz0qabDk9lStoxjHy7fRIcIm/JX5xlA6rjilWBMEgJr4C0a36mJvVXg==
+  dependencies:
+    csstype "3.1.1"
+
+"@clerk/types@4.33.0":
+  version "4.33.0"
+  resolved "https://registry.yarnpkg.com/@clerk/types/-/types-4.33.0.tgz#beca6ceedaabad6f49dc9054b26daf011c98c923"
+  integrity sha512-iR1tc17mK8RDuUkN5tYkl7eymdePf86OodglGms9sVAKmr9mD3pKDN1yEE9LZi3LxgFdTc95QwqrwGQ6h7bAkw==
   dependencies:
     csstype "3.1.1"
 
