@@ -1,4 +1,4 @@
-'user server'
+'use server'
 
 import mongoose from "mongoose";
 const tweetSchema = new mongoose.Schema({
@@ -39,4 +39,5 @@ const tweetSchema = new mongoose.Schema({
   },
 });
 const Tweet = mongoose.models.Tweet || mongoose.model("Tweet", tweetSchema);
+console.log({Tweet})
 export default Tweet;

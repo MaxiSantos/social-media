@@ -1,4 +1,4 @@
-'user server'
+'use server'
 import { revalidatePath } from "next/cache";
 import Tweet from "../models/tweet.model";
 import User from "../models/user.model";
