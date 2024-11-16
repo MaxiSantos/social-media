@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   if (!WEBHOOK_SECRET) {
     throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
-
+  
   // Get the headers
   const headerPayload = headers()
   const svix_id = (await headerPayload).get('svix-id')
@@ -69,6 +69,7 @@ export async function POST(req: Request) {
 
   if (evt.type === 'organization.created') {
     const { id, name, slug, image_url, created_by } = evt.data
+    console.log('about to create the group')
     await createGroup({
       id,
       name,
@@ -76,6 +77,7 @@ export async function POST(req: Request) {
       image: image_url || '',
       createdById: created_by
     })
+    console.log("group created successfully")
   }
 
   if (evt.type === 'user.updated') {

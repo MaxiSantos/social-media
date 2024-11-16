@@ -39,6 +39,7 @@ export const createGroup = async (
       createdBy: user._id,
     });
 
+    console.log('saving group to db')
     const createdGroup = await newGroup.save();
 
     // Update User model
