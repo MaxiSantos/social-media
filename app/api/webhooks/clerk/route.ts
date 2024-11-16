@@ -2,6 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { createUser, updateUser } from '@/lib/actions/user.actions'
+import { createGroup } from '@/lib/actions/group.actions'
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -65,7 +66,18 @@ export async function POST(req: Request) {
     })
     console.log("user created successfully")
   }
-  
+
+  if (evt.type === 'organization.created') {
+    const { id, name, slug, image_url, created_by } = evt.data
+    await createGroup({
+      id,
+      name,
+      username: slug,
+      image: image_url || '',
+      createdById: created_by
+    })
+  }
+
   if (evt.type === 'user.updated') {
     const user = evt.data
     await updateUser({
