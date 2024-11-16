@@ -77,7 +77,8 @@ export const fetchUsers = async ({
       .limit(pageSize)
     const totalUserCount = await User.countDocuments(query)
     const users = await userQuery.exec()
-    const isNext = totalUserCount > skipAmount + users.length
+    const isNext = totalUserCount > skipAmount + users.length;
+    console.log({ users })
     return { users, isNext }
   } catch (err: any) {
     throw new Error(`Failed to fetch users: ${err.message}`)

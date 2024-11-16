@@ -6,15 +6,17 @@ import { dark } from "@clerk/themes"
 import { redirect } from "next/navigation"
 
 const Page = async () => {
-  const user = await currentUser()
+  const user = await currentUser();
+  console.log({ user })
   if (!user) return null;
 
-  const userInfo = await fetchUser(user.id)
+  const userInfo = await fetchUser(user.id);
+  console.log({ userInfo })
   if (userInfo?.onboarded) redirect('/')
 
   const userData = {
     id: user?.id,
-    objectID: JSON.parse(JSON.stringify(userInfo?._id)),
+    //objectID: JSON.parse(JSON.stringify(userInfo?._id)),
     userName: userInfo ? userInfo?.username : user?.username,
     name: userInfo ? userInfo?.name : user?.firstName || '',
     bio: userInfo ? userInfo?.bio : '',
@@ -30,14 +32,12 @@ const Page = async () => {
             Complete your profile now to use Social Media</p>
         </div>
         <div className="mt-10">
-          <ClerkProvider dynamic>
-            <UserProfile
-              appearance={{
-                baseTheme: dark,
-              }}
-              routing="hash"
-            />
-          </ClerkProvider>
+          {<UserProfile
+            appearance={{
+              baseTheme: dark,
+            }}
+            routing="hash"
+          /> }
         </div>
         <AccountInfo
           user={userData}

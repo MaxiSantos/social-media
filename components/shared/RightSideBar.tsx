@@ -1,6 +1,7 @@
 import React from 'react'
 import { fetchUsers } from "@/lib/actions/user.actions"
 import { currentUser } from "@clerk/nextjs/server"
+import UserCard from '../cards/UserCard'
 
 type Props = {}
 
@@ -34,13 +35,12 @@ const RightSideBar = async () => {
               similarMinds.users.length > 0 ? (
                 <>
                   {similarMinds.users.map((person) => {
-                    <UserCard
+                    return <UserCard
                       key={person.id}
                       id={person.id}
                       name={person.name}
                       username={person.name}
-                      imgUrl={person.image}
-                      personType='User'
+                      imgUrl={person.image}                      
                     />
                   })}
                 </>

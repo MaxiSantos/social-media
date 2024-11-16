@@ -22,30 +22,26 @@ export default async function RootLayout({ children }:
   const user = await currentUser()
   if (!user) {
     return (
-      <>
+      <ClerkProvider>
         <html lang='en'>
-          <ClerkProvider>
-            <body>
-              <main className={`${inter.className} bg-dark-1`}>
-                {children}
-              </main>
-            </body>
-          </ClerkProvider>
-        </html>
-      </>
-    )
-  }
-  return (
-    <>
-      <html lang='en'>
-        <ClerkProvider>
           <body>
             <main className={`${inter.className} bg-dark-1`}>
               {children}
             </main>
           </body>
-        </ClerkProvider>
+        </html>
+      </ClerkProvider>
+    )
+  }
+  return (
+    <ClerkProvider>
+      <html lang='en'>
+        <body>
+          <main className={`${inter.className} bg-dark-1`}>
+            {children}
+          </main>
+        </body>
       </html>
-    </>
+    </ClerkProvider>
   )
 }
