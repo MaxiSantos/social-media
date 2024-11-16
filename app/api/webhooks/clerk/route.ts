@@ -2,7 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { createUser, updateUser } from '@/lib/actions/user.actions'
-import { createGroup } from '@/lib/actions/group.actions'
+import { addMemberToGroup, createGroup } from '@/lib/actions/group.actions'
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   if (!WEBHOOK_SECRET) {
     throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
   }
-  
+
   // Get the headers
   const headerPayload = headers()
   const svix_id = (await headerPayload).get('svix-id')
@@ -78,6 +78,11 @@ export async function POST(req: Request) {
       createdById: created_by
     })
     console.log("group created successfully")
+  }
+
+  if (evt.type === 'organizationMembership.created') {
+    const { organization, public_user_data } = evt.data
+    await addMemberToGroup(organization.id, public_user_data.user_id)
   }
 
   if (evt.type === 'user.updated') {
