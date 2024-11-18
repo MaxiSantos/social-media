@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useOrganization } from "@clerk/nextjs";
 import {
   Form,
   FormControl,
@@ -22,6 +23,7 @@ interface Props {
 const PostTweet = ({ userId }: Props) => {
   const pathname = usePathname();
   const router = useRouter();
+  const { organization } = useOrganization();
   const deserializedUserId = JSON.parse(userId, (key, value) => {
     if (key === "created_at" || key === "updated_at") {
         return new Date(value);
@@ -40,7 +42,8 @@ const PostTweet = ({ userId }: Props) => {
     await createTweet({
       text: values.tweet,
       author: deserializedUserId,
-      path: pathname
+      path: pathname,
+      groupId: organization ? organization.id : null
     })
     router.push('/')
   }

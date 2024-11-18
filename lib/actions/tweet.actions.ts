@@ -3,26 +3,31 @@ import { revalidatePath } from "next/cache";
 import Tweet from "../models/tweet.model";
 import User from "../models/user.model";
 import { connectToDB } from "../db";
+import Group from "../models/group.model";
 
 interface TweetParams {
   text: string;
   author: string;
   path: string;
-  retweetOf?: string
+  retweetOf?: string;
+  groupId: string | null;
 }
 export const createTweet = async ({
   text,
   author,
   path,
-  retweetOf
+  retweetOf,
+  groupId
 }: TweetParams) => {
   try {
-    connectToDB()
+    connectToDB();
+    const groupIdObject = await Group.findOne({ id: groupId }, { _id: 1 });
     const createdTweet = await Tweet.create({
       text,
       author,
       path,
-      retweetOf
+      retweetOf,
+      group: groupIdObject
     })
     await User.findByIdAndUpdate(author, {
       $push: { tweets: createdTweet._id },
@@ -30,6 +35,11 @@ export const createTweet = async ({
     if (retweetOf) {
       await User.findByIdAndUpdate(author, {
         $push: { retweets: createdTweet._id },
+      });
+    }
+    if (groupIdObject) {
+      await Group.findByIdAndUpdate(groupIdObject, {
+        $push: { tweets: createdTweet._id },
       });
     }
     revalidatePath(path)
