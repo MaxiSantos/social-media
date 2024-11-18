@@ -29,6 +29,10 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(onboardingUrl);
   }
 
+  const checkIsPublicRoute = !isPublicRoute(req);
+  console.log({checkIsPublicRoute})
+  console.log(req.url)
+  console.log({userId})
   // If the user is logged in and the route is protected, let them view.
   if (userId && !isPublicRoute(req)) {
     return NextResponse.next();
