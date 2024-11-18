@@ -80,6 +80,12 @@ export async function POST(req: Request) {
     console.log("group created successfully")
   }
 
+  if (evt.type === 'organization.deleted') {
+    const { id } = evt.data
+    // @ts-ignore
+    await deleteGroup(id)
+  }
+
   if (evt.type === 'organization.updated') {
     const { id, image_url, name, slug } = evt.data
     await updateGroupInfo(id, name, slug, (image_url || ''))
