@@ -8,8 +8,8 @@ type ResponseData = {
 }
  
 const handler = async function (
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  req: Request,
+  res: NextResponse<ResponseData>
 ) {
   const { userId } = await auth();
   console.log({userId})
