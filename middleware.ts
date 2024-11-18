@@ -10,20 +10,21 @@ const isPublicRoute = createRouteMatcher([
   "/register(.*)", 
   "/onboarding(.*)",
   "/test(.*)",  
-  "/api/webhooks(.*)",  
+  "/api/webhooks(.*)",
+  "/api/public(.*)",
 ])
 
 export default clerkMiddleware(async (auth, req) => {
   console.log("runnig middleware")
   const { userId, sessionClaims, redirectToSignIn } = await auth();
-
   const isPrivateRoute = !isPublicRoute(req); 
+  console.log("url: "+req.url)
+  console.log({isPrivateRoute})
+
   // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && isPrivateRoute) {
     console.log("about to redirect to sign in")
     console.log({userId})
-    console.log({isPrivateRoute})
-    console.log("url: "+req.url)
     return redirectToSignIn({ returnBackUrl: req.url });
   }
 
