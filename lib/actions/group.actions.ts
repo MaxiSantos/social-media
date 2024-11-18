@@ -41,12 +41,7 @@ export const createGroup = async (
     });
 
     console.log('saving group to db')
-    const createdGroup = await newGroup.save();
-
-    // Update User model
-    user.groups.push(createdGroup._id);
-    await user.save();
-
+    await newGroup.save();
   } catch (error) {
     // Handle any errors
     console.error("Error creating group:", error);
