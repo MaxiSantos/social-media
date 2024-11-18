@@ -135,3 +135,30 @@ export const removeUserFromGroup = async (
     throw error;
   }
 }
+
+export const updateGroupInfo = async(
+  groupId: string,
+  name: string,
+  username: string,
+  image: string
+) => {
+  try {
+    connectToDB();
+
+    // Find the group by its _id and update the information
+    const updatedGroup = await Group.findOneAndUpdate(
+      { id: groupId },
+      { name, username, image }
+    );
+
+    if (!updatedGroup) {
+      throw new Error("Group not found");
+    }
+
+    return updatedGroup;
+  } catch (error) {
+    // Handle any errors
+    console.error("Error updating group information:", error);
+    throw error;
+  }
+}

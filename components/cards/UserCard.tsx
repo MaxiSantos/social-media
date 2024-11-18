@@ -29,7 +29,7 @@ const UserCard = ({
           />
           <div className="flex-1 text-ellipsis">
             <h4 className="text-base-semibold text-light-1">
-              {name}
+              {name || 'annonymous'}
             </h4>
             <p className="text-small-medium text-gray-1">
               @{username}
