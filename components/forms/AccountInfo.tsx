@@ -1,6 +1,6 @@
 'use client'
 import { useForm } from "react-hook-form";
-import { updateUser } from "@/lib/actions/user.actions";
+import { completeOnboarding, updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -17,16 +17,18 @@ import * as z from 'zod'
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
+import { useUser } from "@clerk/nextjs";
 interface Props {
-  user: {
+  userData: {
     id: string;
     bio: string
   }
 }
 
-const AccountInfo = ({ user }: Props) => {
+const AccountInfo = ({ userData }: Props) => {
   const pathname = usePathname()
   const router = useRouter()
+  const { user } = useUser()
   const [showBio, setShowBio] = useState(false)
   useEffect(() => {
     setTimeout(() => {
@@ -37,16 +39,22 @@ const AccountInfo = ({ user }: Props) => {
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      bio: user?.bio ? user.bio : ''
+      bio: userData?.bio ? userData.bio : ''
     }
   })
 
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     await updateUser({
-      userId: user.id,
+      userId: userData.id,
       bio: values.bio,
       path: pathname
     })
+    const res = await completeOnboarding()
+    if (res?.message) {
+      // Reloads the user's data from the Clerk API
+      await user?.reload()      
+    }
+
     if (pathname === '/profile/edit') {
       router.back()
     } else {

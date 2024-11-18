@@ -1,8 +1,8 @@
 import AccountInfo from "@/components/forms/AccountInfo"
+import UserProfileWrapper from "@/components/forms/UserProfile"
 import { fetchUser } from "@/lib/actions/user.actions"
-import { ClerkProvider, UserProfile } from "@clerk/nextjs"
 import { currentUser } from "@clerk/nextjs/server"
-import { dark } from "@clerk/themes"
+
 import { redirect } from "next/navigation"
 
 const Page = async () => {
@@ -32,15 +32,10 @@ const Page = async () => {
             Complete your profile now to use Social Media</p>
         </div>
         <div className="mt-10">
-          {<UserProfile
-            appearance={{
-              baseTheme: dark,
-            }}
-            routing="hash"
-          /> }
+          <UserProfileWrapper />                    
         </div>
         <AccountInfo
-          user={userData}
+          userData={userData}
         />
       </main>
     </>

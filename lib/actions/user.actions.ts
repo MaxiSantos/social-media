@@ -3,6 +3,7 @@ import User from "../models/user.model"
 import { connectToDB } from "../db";
 import { revalidatePath } from "next/cache";
 import { FilterQuery, SortOrder } from "mongoose";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 type CreateUserParams = {
   userId: string;
@@ -120,5 +121,24 @@ export const updateUser = async ({
     if (path === '/profile/edit') revalidatePath(path)
   } catch (err: any) {
     throw new Error(`Failed to update user info: ${err.message}`)
+  }
+}
+
+export const completeOnboarding = async () => {
+  const { userId } = await auth()
+
+  if (!userId) {
+    return { message: 'No Logged In User' }
+  }
+
+  try {
+    const res = await (await clerkClient()).users.updateUser(userId, {
+      publicMetadata: {
+        onboardingComplete: true        
+      },
+    })
+    return { message: res.publicMetadata }
+  } catch (err) {
+    return { error: 'There was an error updating the user metadata.' }
   }
 }
