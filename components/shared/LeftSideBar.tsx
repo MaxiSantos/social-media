@@ -6,13 +6,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Suspense } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import getConfig from 'next/config';
 
 const LeftSideBar = () => {
   const pathname = usePathname()
-  const { userId } = useAuth()
+  const { userId } = useAuth()  
   return (
     <ClerkProvider dynamic>
       <section className="leftsidebar custom-scrollbar">
+        <small className='text-light-1' >{process.env.version}</small>
+     
         <div className="flex w-full flex-1 flex-col gap-6 px-6">
           <Suspense fallback={<Skeleton />}>
             {
