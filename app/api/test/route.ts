@@ -7,7 +7,7 @@ type ResponseData = {
   message: string
 }
  
-export default async function GET(
+const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
@@ -16,3 +16,23 @@ export default async function GET(
   console.log("url: "+req.url)
   return NextResponse.json({ status: 'ok' });
 }
+
+export { handler as GET };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
