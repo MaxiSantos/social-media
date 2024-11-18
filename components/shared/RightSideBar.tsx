@@ -2,6 +2,8 @@ import React from 'react'
 import { fetchUsers } from "@/lib/actions/user.actions"
 import { currentUser } from "@clerk/nextjs/server"
 import UserCard from '../cards/UserCard'
+import { fetchGroups } from '@/lib/actions/group.actions'
+import GroupCard from '../cards/GroupCard'
 
 type Props = {}
 
@@ -13,6 +15,9 @@ const RightSideBar = async () => {
     userId: user.id,
     pageSize: 4
   })
+
+  const suggestedGroups = await fetchGroups({ pageSize: 4 })
+
   return (
     <>
       <section className="custom-scrollbar rightsidebar">
@@ -25,6 +30,30 @@ const RightSideBar = async () => {
           <h3 className="text-heading4-medium text-light-1">
             Groups
           </h3>
+          <div className="mt-7 flex w-[350px] flex-col gap-10">
+            {
+              suggestedGroups.groups.length > 0 ? (
+                <>
+                  {suggestedGroups.groups.map((group) =>
+                    <GroupCard
+                      key={group.id}
+                      id={group.id}
+                      name={group.name}
+                      username={group.username}
+                      imgUrl={group.image}
+                      members={group.members}
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="!text-base-regular text-light-3">
+                    No Groups yet
+                  </p>
+                </>
+              )
+            }
+          </div>
         </div>
         <div className="flex flex-col flex-1 justify-start">
           <h3 className="text-heading4-medium text-light-1">
@@ -40,7 +69,7 @@ const RightSideBar = async () => {
                       id={person.id}
                       name={person.name}
                       username={person.name}
-                      imgUrl={person.image}                      
+                      imgUrl={person.image}
                     />
                   })}
                 </>
@@ -54,7 +83,7 @@ const RightSideBar = async () => {
             }
           </div>
         </div>
-      </section>
+      </section >
     </>
   )
 }
