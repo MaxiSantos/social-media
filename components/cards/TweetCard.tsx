@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import TweetLikeButton from "../shared/TweetLikeButton";
+import RetweetButton from "../shared/RetweetButton";
 
 interface Props {
   id: string;
@@ -138,15 +140,12 @@ const TweetCard = ({
                             />
                           </div>
                         ))}
-
                       </Link>
                     </div>
                   )}
                 </div>
-
               </div>
             </div>
-
             <div>
               {retweetOf && (
                 <Link
