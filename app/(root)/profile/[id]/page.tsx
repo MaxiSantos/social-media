@@ -1,4 +1,6 @@
 import ProfileHeader from "@/components/shared/ProfileHeaders"
+import TweetsTab from "@/components/shared/TweetsTab"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { fetchUser } from "@/lib/actions/user.actions"
 import { currentUser } from "@clerk/nextjs/server"
 
@@ -12,11 +14,11 @@ export default async function Profile(props: {
   const params = await props.params;
   const user = await currentUser();
   if (!user) return <p className="text-light-1"> no user </p>;
-  console.log({params})
-  if(!params.id){
+  console.log({ params })
+  if (!params.id) {
     return <p className="text-light-1"> no id param </p>;
   }
-  const userInfo = await fetchUser(params.id)  
+  const userInfo = await fetchUser(params.id)
   return (
     <>
       <section>
@@ -30,6 +32,60 @@ export default async function Profile(props: {
           type='User'
         />
 
+        <div className='mt-9'>
+          <Tabs defaultValue='Twiddle' className='w-full'>
+            <TabsList className='tab'>
+              {profileTabs.map(tab => (
+                <TabsTrigger
+                  key={tab.label}
+                  value={tab.value}
+                  className='tab'
+                >
+                  <Image
+                    src={tab.icon}
+                    alt={tab.label}
+                    width={24}
+                    height={24}
+                    className='object-contain'
+                  />
+                  <p className='max-sm:hidden'>{tab.label}</p>
+                  {tab.label === 'Tweets' && (
+                    <p className='ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2 '>
+                      {userInfo?.tweets?.length}
+                    </p>
+                  )}
+                  {tab.label === 'Replies' && (
+                    <p className='ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2 '>
+                      {userInfo?.replies?.length}
+                    </p>
+                  )}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent
+              value={'tweets'}
+              className='w-full text-light-1'
+            >
+              <TweetsTab
+                currentUserId={user.id}
+                accountId={userInfo.id}
+                accountType="User"
+                user={user}
+              />
+            </TabsContent>
+            <TabsContent
+              value={'replies'}
+              className='w-full text-light-1'
+            >
+              <RepliesTab
+                currentUserId={user.id}
+                accountId={userInfo.id}
+                user={user}
+              />
+            </TabsContent>
+
+          </Tabs>
+        </div>
       </section>
     </>
   )

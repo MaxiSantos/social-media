@@ -4,6 +4,8 @@ import { connectToDB } from "../db";
 import { revalidatePath } from "next/cache";
 import { FilterQuery, SortOrder } from "mongoose";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import Tweet from "../models/tweet.model";
+import Group from "../models/group.model";
 
 type CreateUserParams = {
   userId: string;
@@ -134,11 +136,54 @@ export const completeOnboarding = async () => {
   try {
     const res = await (await clerkClient()).users.updateUser(userId, {
       publicMetadata: {
-        onboardingComplete: true        
+        onboardingComplete: true
       },
     })
     return { message: res.publicMetadata }
   } catch (err) {
     return { error: 'There was an error updating the user metadata.' }
+  }
+}
+
+export const fetchUserPosts = async (userId: string) => {
+  try {
+    connectToDB();
+
+    // Find all tweets authored by the user with the given userId
+    const tweets = await User.findOne({ id: userId }).populate({
+      path: "tweets",
+      model: Tweet,
+      options: {
+        sort: { createdAt: 'desc' }
+      }, // Sort tweets in descending order by createdAt
+      populate: [
+        {
+          path: "group",
+          model: Group,
+          select: "name id image _id", // Select the "name" and "_id" fields from the "Group" model
+        },
+        {
+          path: 'retweetOf', // Populate the retweetOf field
+          populate: {
+            path: 'author',
+            model: User,
+            select: '_id name image',
+          },
+        },
+        {
+          path: "children",
+          model: Tweet,
+          populate: {
+            path: "author",
+            model: User,
+            select: "name image id", // Select the "name" and "_id" fields from the "User" model
+          },
+        },
+      ],
+    });
+    return tweets;
+  } catch (error) {
+    console.error("Error fetching user tweets:", error);
+    throw error;
   }
 }
