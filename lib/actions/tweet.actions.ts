@@ -92,3 +92,47 @@ export const fetchTweets = async (pageNumber = 1, pageSize = 20) => {
 
   return { posts, isNext };
 };
+
+export async function likeOrDislikeTweet(userId: string, tweetId: string, path: string) {
+  try {
+    connectToDB();
+
+    // Find the user and check if they have already liked the tweet
+    const user = await User.findOne({ id: userId });
+    if (!user) throw new Error("User not found");
+
+    let tweet;
+
+    if (user.likedTweets.includes(tweetId)) {
+      // If the tweet is already liked, decrement its likes and remove it from the user's likedTweets
+      tweet = await Tweet.findByIdAndUpdate(
+        tweetId,
+        { $inc: { likes: -1 } },
+        { new: true } // Return the updated document
+      );
+
+      // Remove the tweet from the user's likedTweets array
+      user.likedTweets = user.likedTweets.filter((id: any) => id.toString() !== tweetId);
+    
+    } else {
+      // If the tweet is not liked, increment its likes and add it to the user's likedTweets
+      tweet = await Tweet.findByIdAndUpdate(
+        tweetId,
+        { $inc: { likes: 1 } },
+        { new: true } // Return the updated document
+      );
+      
+      // Add the tweet to the user's likedTweets array
+      user.likedTweets.push(tweetId);
+    }
+    if (!tweet) {
+      throw new Error("Tweet not found");
+    }
+
+    await user.save();
+    revalidatePath(path)
+
+  } catch (error: any) {
+    throw new Error(`Failed to like or dislike tweet: ${error.message}`);
+  }
+}
