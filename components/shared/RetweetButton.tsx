@@ -28,8 +28,7 @@ const RetweetButton = ({
     } catch (error: any) {
       if (error.message.includes('already retweeted')) {
         alert('You already retweeted this tweet before')
-      } else {
-        console.error('Failed to retweet:', error);
+      } else {        
         alert('An error occurred while retweeting. Please try again.');
       }
     }
