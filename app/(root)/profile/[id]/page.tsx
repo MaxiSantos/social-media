@@ -1,8 +1,11 @@
 import ProfileHeader from "@/components/shared/ProfileHeaders"
+import RepliesTab from "@/components/shared/ReplyTabs"
 import TweetsTab from "@/components/shared/TweetsTab"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { profileTabs } from "@/constants"
 import { fetchUser } from "@/lib/actions/user.actions"
 import { currentUser } from "@clerk/nextjs/server"
+import Image from "next/image"
 
 type SearchParams = Promise<{ [key: string]: string | undefined }>
 type Params = Promise<{ id: string }>
