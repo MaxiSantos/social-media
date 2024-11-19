@@ -1,4 +1,6 @@
+'use client'
 import { deleteTweet } from "@/lib/actions/tweet.actions";
+import { deserialize } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 interface Props {
@@ -9,9 +11,12 @@ const DeleteTweetButton = ({
   userId,
   tweetId
 }: Props) => {
-  const path = usePathname()
+  const path = usePathname();
+  const deserializedUserId = deserialize<string>(userId)
+  const deserializedTweetId = deserialize<string>(tweetId)
+  
   const handleDeleteTweet = async () => {
-    await deleteTweet(userId, tweetId, path)
+    await deleteTweet(deserializedUserId, deserializedTweetId, path)
   }
   return (
     <button onClick={handleDeleteTweet}>

@@ -1,5 +1,6 @@
 'use client'
 import { retweetTweet } from "@/lib/actions/tweet.actions";
+import { deserialize } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -15,12 +16,14 @@ const RetweetButton = ({
   groupId,
   retweeted,
 }: Props) => {
-  const path = usePathname() // Get the current path
+  const path = usePathname();
+  const deserializedTweetId = deserialize<string>(tweetId)
+  const deserializedUserId = deserialize<string>(userId)
   const handleRetweet = async () => {
     try {
       await retweetTweet({
-        tweetId,
-        userId,
+        tweetId: deserializedTweetId,
+        userId: deserializedUserId,
         path,
         groupId,
       })

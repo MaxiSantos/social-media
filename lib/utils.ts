@@ -24,3 +24,23 @@ export function formatDateString(dateString: string): string {
   // Format the date using the options
   return date.toLocaleString('en-US', options);
 }
+
+export function serialize<T>(obj: T): string {
+  try {
+    return JSON.stringify(obj);
+  } catch (error) {
+    throw new Error("Failed to serialize object: " + error);
+  }
+}
+
+export function deserialize<T>(str: string): T {
+  try {
+    return JSON.parse(str, (key, value) => {
+      if (key === "created_at" || key === "updated_at") {
+        return new Date(value);
+      }
+      return value;}) as T;
+    } catch (error) {
+      throw new Error("Failed to deserialize string: " + error);
+    }
+  }

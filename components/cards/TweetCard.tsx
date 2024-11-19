@@ -4,7 +4,7 @@ import TweetLikeButton from "../shared/TweetLikeButton";
 import RetweetButton from "../shared/RetweetButton";
 import ShareTweetButton from "../shared/ShareTweetButton";
 import DeleteTweetButton from "../shared/DeleteTweetButton";
-import { formatDateString } from "@/lib/utils";
+import { formatDateString, serialize } from "@/lib/utils";
 
 interface Props {
   id: string;
@@ -95,7 +95,7 @@ const TweetCard = ({
               <div className={`${isComment && 'mb-20'} mt-5 flex flex-col gap-3`}>
                 <div className="flex gap-3">
                   <TweetLikeButton
-                    tweetId={id}
+                    tweetId={serialize(id)}
                     currentUserId={currentUserId}
                     likes={likes}
                     liked={liked}
@@ -106,8 +106,8 @@ const TweetCard = ({
                     />
                   </Link>
                   <RetweetButton
-                    tweetId={id}
-                    userId={DB_userID}
+                    tweetId={serialize(id)}
+                    userId={serialize(DB_userID)}
                     groupId={group ? group.id : null}
                     retweeted={retweetOf ? true : false}
                   />
@@ -116,8 +116,8 @@ const TweetCard = ({
                   />
                   {owner && (
                     <DeleteTweetButton
-                      userId={DB_userID}
-                      tweetId={id}
+                      userId={serialize(DB_userID)}
+                      tweetId={serialize(id)}
                     />
                   )}
                 </div>

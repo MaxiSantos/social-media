@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { likeOrDislikeTweet } from "@/lib/actions/tweet.actions";
+import { deserialize } from "@/lib/utils";
 
 interface Props {
   tweetId: string;
@@ -16,9 +17,10 @@ const TweetLikeButton = ({
   liked
 }: Props) => {
   const path = usePathname() // Get the current path
+  const deserializedTweetId = deserialize<string>(tweetId)
   const handleLike = async () => {
     try {
-      await likeOrDislikeTweet(currentUserId, tweetId, path);
+      await likeOrDislikeTweet(currentUserId, deserializedTweetId, path);
     } catch (error: any) {
       console.error("Failed to like or dislike tweet:", error);
     }
