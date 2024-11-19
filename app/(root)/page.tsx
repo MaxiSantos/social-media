@@ -1,4 +1,5 @@
 import TweetCard from "@/components/cards/TweetCard";
+import Pagination from "@/components/shared/Pagination";
 import { fetchTweets, isTweetByUser } from "@/lib/actions/tweet.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs/server";
@@ -25,7 +26,7 @@ export default async function Home(props: {
     <>
       <section className='mt-10 flex flex-col gap-10'>
         {result.posts.length === 0 ? (
-          <p className='no-result'>No tweets found</p>
+          <p className='no-result text-light-1'>No tweets found</p>
         ) : (
           <div>
             {result.posts.map(async (tweet) => {
@@ -52,9 +53,14 @@ export default async function Home(props: {
               )
             }
             )}
+            <Pagination
+              path='/'
+              pageNumber={searchParams?.page ? +searchParams.page : 1}
+              isNext={result.isNext}
+            />
           </div>
         )}
-      </section>
+      </section>     
     </>
   )
 }
