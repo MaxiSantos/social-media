@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { CommentValidation } from "@/lib/validations/comment";
 import { deserialize } from "@/lib/utils";
+import { addCommentToTweet } from "@/lib/actions/tweet.actions";
 
 interface Props {
   tweetId: string,
@@ -17,7 +18,7 @@ interface Props {
 }
 const Comment = ({ tweetId, currentUserImg, currentUserId }: Props) => {
   const pathname = usePathname();
-  const deserializedUserId = deserialize(currentUserId)
+  const deserializedUserId = deserialize<string>(currentUserId)
   const form = useForm<z.infer<typeof CommentValidation>>({
     resolver: zodResolver(CommentValidation),
     defaultValues: {
@@ -25,7 +26,7 @@ const Comment = ({ tweetId, currentUserImg, currentUserId }: Props) => {
     },
   });
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    //await addCommentToTweet(tweetId, values.tweet, deserializedUserId, pathname)
+    await addCommentToTweet(tweetId, values.tweet, deserializedUserId, pathname)
     form.reset()
   }
   return (

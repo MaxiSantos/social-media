@@ -1,6 +1,8 @@
 import TweetCard from "@/components/cards/TweetCard"
+import Comment from "@/components/forms/Comment"
 import { fetchTweetById, isTweetByUser } from "@/lib/actions/tweet.actions"
 import { fetchUser } from "@/lib/actions/user.actions"
+import { serialize } from "@/lib/utils"
 import { currentUser } from "@clerk/nextjs/server"
 import Image from "next/image"
 import { redirect } from "next/navigation"
@@ -54,11 +56,11 @@ export default async function Page(props: {
           />
         </div>
         <div className="mt-7">
-          {/* <Comment
+          <Comment
             tweetId={tweet.id}
             currentUserImg={userInfo.image}
-            currentUserId={JSON.stringify(userInfo._id)}
-          /> */}
+            currentUserId={serialize(userInfo._id)}
+          />
         </div>
 
         <div className="mt-10">

@@ -335,3 +335,35 @@ export const retweetTweet = async ({
     throw new Error(`Failed to retweet: ${error.message}`);
   }
 }
+
+export const addCommentToTweet = async (
+  tweetId: string,
+  commentText: string,
+  userId: string,
+  path: string
+) => {
+  connectToDB();
+  try {
+    const originalTweet = await Tweet.findById(tweetId);
+    if (!originalTweet) throw new Error('Tweet Not Found!!!');
+
+    const commentTweet = new Tweet({
+      text: commentText,
+      author: userId,
+      parentId: tweetId,
+    });
+
+    const savedCommentTweet = await commentTweet.save();
+
+    // Update user's replies
+    await User.findByIdAndUpdate(userId, {
+      $push: { replies: savedCommentTweet._id },
+    });
+
+    originalTweet.children.push(savedCommentTweet._id);
+    await originalTweet.save();
+    revalidatePath(path);
+  } catch (err: any) {
+    throw new Error(`Error adding comment to tweet: ${err.message}`);
+  }
+};
