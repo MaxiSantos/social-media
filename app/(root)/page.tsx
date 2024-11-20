@@ -10,13 +10,12 @@ type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 export default async function Home(props: {
   searchParams: SearchParams
 }) {
-  const searchParams = await props.searchParams
   const user = await currentUser();
-
   if (!user) {
     return <LandingPage />
   }
 
+  const searchParams = await props.searchParams
   const userInfo = await fetchUser(user.id)
   const result = await fetchTweets(
     searchParams.page ? +searchParams.page : 1,
