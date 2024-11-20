@@ -1,8 +1,8 @@
 import BottomBar from "@/components/shared/BottomBar";
 import LeftSideBar from "@/components/shared/LeftSideBar";
+import MainSection from "@/components/shared/MainSection";
 import RightSideBar from "@/components/shared/RightSideBar";
 import TopBar from "@/components/shared/TopBar";
-import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -12,11 +12,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <TopBar />
       <main className='flex'>
         <LeftSideBar userId={userId} />
-        <section className='main-container'>
-          <div className='w-full max-w-4xl'>
-            {children}
-          </div>
-        </section>
+        <MainSection>
+          {children}
+        </MainSection>
         <RightSideBar />
       </main>
       <BottomBar userId={userId} />

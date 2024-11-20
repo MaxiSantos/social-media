@@ -17,7 +17,7 @@ const RightSideBar = async () => {
   })
 
   const suggestedGroups = await fetchGroups({ pageSize: 4 })
-
+  console.log({similarMinds})
   return (
     <>
       <section className="custom-scrollbar rightsidebar">

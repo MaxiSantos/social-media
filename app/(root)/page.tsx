@@ -60,7 +60,7 @@ export default async function Home(props: {
             />
           </div>
         )}
-      </section>     
+      </section>
     </>
   )
 }
