@@ -36,7 +36,7 @@ export default async function Profile(props: {
         />
 
         <div className='mt-9'>
-          <Tabs defaultValue='Twiddle' className='w-full'>
+          <Tabs defaultValue='tweets' className='w-full'>
             <TabsList className='tab'>
               {profileTabs.map(tab => (
                 <TabsTrigger
@@ -66,7 +66,7 @@ export default async function Profile(props: {
               ))}
             </TabsList>
             <TabsContent
-              value={'tweets'}
+              value='tweets'
               className='w-full text-light-1'
             >
               <TweetsTab
@@ -77,7 +77,7 @@ export default async function Profile(props: {
               />
             </TabsContent>
             <TabsContent
-              value={'replies'}
+              value='replies'
               className='w-full text-light-1'
             >
               <RepliesTab
