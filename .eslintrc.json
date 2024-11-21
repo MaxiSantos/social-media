@@ -14,7 +14,7 @@
     "@next/next/no-page-custom-font": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "allowObjectTypes": 2
+    "@typescript-eslint/no-empty-object-type": "always"    
   },
   "overrides": [
 		{
