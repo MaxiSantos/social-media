@@ -1,10 +1,29 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"],
+  "extends": [
+    "next/core-web-vitals", 
+    "next/typescript"    
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
   "rules": {
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "allowObjectTypes": "on"
-  }
+    "allowObjectTypes": 2
+  },
+  "overrides": [
+		{
+			// 3) Now we enable eslint-plugin-testing-library rules or preset only for matching testing files!
+			"files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+			"extends": [
+        "plugin:testing-library/react",
+        "plugin:jest-dom/recommended"
+      ]
+		}
+	]
 }

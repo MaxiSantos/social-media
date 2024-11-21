@@ -1,8 +1,8 @@
-export default async function Home() {
-  
+'use client'
+export default function Test() {  
   return (
     <main>
-      <h1 className="text-center text-light-1">Public page</h1>
+      <h1 className="text-center text-light-1">Public page test</h1>
     </main>
   );
 }
